@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <meta name="author" content="cheche_ops">
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>编写dockerfile - Kubernetes</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "\u7f16\u5199dockerfile";
+    var mkdocs_page_input_path = "Dockerfile.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> Kubernetes</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="..">k8s概述</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../basic/">基本架构</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../server/">配置server</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../client/">Kubernetes Client 配置 (aliyun)</a>
+	    </li>
+          
+            <li class="toctree-l1 current">
+		
+    <a class="current" href="./">编写dockerfile</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l2"><a href="#from">FROM 命令</a></li>
+    
+
+    <li class="toctree-l2"><a href="#workdir">WORKDIR</a></li>
+    
+
+    <li class="toctree-l2"><a href="#copy">COPY</a></li>
+    
+
+    <li class="toctree-l2"><a href="#cmd">CMD</a></li>
+    
+
+    <li class="toctree-l2"><a href="#_1">示例如下：</a></li>
+    
+
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../create-dockerImg/">创建镜像</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../init-env/">环境准备</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../deploy/">部署项目</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../about.md">管理</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../about.md">维护</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../about.md">其他</a>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">Kubernetes</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>编写dockerfile</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h3 id="from">FROM 命令</h3>
+<pre><code>用于指定基础镜像，必须有，一般，java 基于jre,python 的就选择对应版本的镜像
+</code></pre>
+<h3 id="workdir">WORKDIR</h3>
+<pre><code>指定工作目录，其实后面再写命令如COPY命名 后面的/代表的就是工作目录
+</code></pre>
+<h3 id="copy">COPY</h3>
+<pre><code>需要复制可执行的程序文件，配置文件，打入我们的镜像中
+</code></pre>
+<h3 id="cmd">CMD</h3>
+<pre><code> 镜像启动命令，类似于tomcat start 这样的操作。
+     以上所有的命令，每一行代表一层，层越多，相应的镜像越大。
+</code></pre>
+<h3 id="_1">示例如下：</h3>
+<pre><code>FROM openjdk:8u171-jre-alpine
+WORKDIR /gateway
+COPY ./build/libs/*gateway-*.jar /gateway
+CMD java \
+    -Ddiscovery.hostname=${DISCOVERY_HOSTNAME} \
+    -Dserver.port=${server_port}  \
+    -Duser.timezone=GMT+08 \
+    -Xms512m -Xmx512m -XX:+HeapDumpOnOutOfMemoryError -XX:+PrintFlagsFinal -XX:+PrintCommandLineFlags -XX:+PrintGC \
+    -jar *gateway-*.jar
+
+
+</code></pre>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../create-dockerImg/" class="btn btn-neutral float-right" title="创建镜像">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../client/" class="btn btn-neutral" title="Kubernetes Client 配置 (aliyun)"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+      <p>None</p>
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../client/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../create-dockerImg/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+
+</body>
+</html>

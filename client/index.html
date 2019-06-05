@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <meta name="author" content="cheche_ops">
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Kubernetes Client 配置 (aliyun) - Kubernetes</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Kubernetes Client \u914d\u7f6e (aliyun)";
+    var mkdocs_page_input_path = "client.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> Kubernetes</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="..">k8s概述</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../basic/">基本架构</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../server/">配置server</a>
+	    </li>
+          
+            <li class="toctree-l1 current">
+		
+    <a class="current" href="./">Kubernetes Client 配置 (aliyun)</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l2"><a href="#_1">获取登录凭证</a></li>
+    
+
+    <li class="toctree-l2"><a href="#_2">依赖环境</a></li>
+    
+
+    <li class="toctree-l2"><a href="#_3">环境部署</a></li>
+    
+
+    <li class="toctree-l2"><a href="#docker">Docker 登录阿里云</a></li>
+    
+
+    <li class="toctree-l2"><a href="#k8s-client">配置 k8s client 认证文件(阿里云)</a></li>
+    
+
+    <li class="toctree-l2"><a href="#_4">获取项目配置信息</a></li>
+    
+
+    <li class="toctree-l2"><a href="#yaml">yaml模板替换</a></li>
+    
+
+    <li class="toctree-l2"><a href="#gradle-jenkins">Gradle 测试   (Jenkins 集成)</a></li>
+    
+
+    <li class="toctree-l2"><a href="#docker_1">构建docker 镜像</a></li>
+    
+
+    <li class="toctree-l2"><a href="#_5">命名 为阿里格式 / 上传</a></li>
+    
+
+    <li class="toctree-l2"><a href="#_6">提交配置</a></li>
+    
+
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../Dockerfile/">编写dockerfile</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../create-dockerImg/">创建镜像</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../init-env/">环境准备</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../deploy/">部署项目</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../about.md">管理</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../about.md">维护</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../about.md">其他</a>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">Kubernetes</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Kubernetes Client 配置 (aliyun)</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h3 id="_1">获取登录凭证</h3>
+<p>登录<a href="https://cs.console.aliyun.com/?spm=5176.2020520001.aliyun_sidebar.10.69864bd3N5GRIT#/k8s/cluster/c4082eec4463a4912b3f0df1c27929063/info?eci=false">阿里云容器服务</a>，基本信息内，通过 kubectl 连接 Kubernetes 集群 获取认证信息</p>
+<ul>
+<li>
+<ol>
+<li>从 <a href="https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG.md">Kubernetes 版本页面</a> 下载最新的 kubectl 客户端。</li>
+</ol>
+</li>
+<li>
+<p>安装和设置 kubectl 客户端。有关详细信息，参见 <a href="https://kubernetes.io/docs/tasks/kubectl/install/">安装和设置 kubectl</a></p>
+</li>
+<li>
+<p>配置集群凭据:</p>
+<p>将凭证 复制到 客户端  $HOME/.kube/config   #\$HOME 为登录到阿里云k8s server的用户home目录 </p>
+</li>
+</ul>
+<h3 id="_2">依赖环境</h3>
+<table>
+<thead>
+<tr>
+<th>环境</th>
+<th>版本</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ubuntu</td>
+<td>16.04   &ndash; 系统非依赖</td>
+</tr>
+<tr>
+<td>kubectl</td>
+<td>1.13.2</td>
+</tr>
+<tr>
+<td>git</td>
+<td>any</td>
+</tr>
+<tr>
+<td>docker</td>
+<td>Docker version 18.06.3-ce, build d7080c1</td>
+</tr>
+<tr>
+<td>Gradle</td>
+<td></td>
+</tr>
+<tr>
+<td>Jenkins</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="_3">环境部署</h3>
+<ul>
+<li>Cent OS</li>
+</ul>
+<pre><code class="shell">$ sudo yum -y install net-tools   #centos7 网络工具
+$ sudo yum -y install git
+$ sudo yum -y install kubernetes-client
+
+$ sudo yum install docker  # docker 环境
+$ sudo reboot # 如果安装docker 需更新内核信息
+</code></pre>
+
+<blockquote>
+<p># yum search kubectl</p>
+<p>已加载插件：fastestmirror
+Loading mirror speeds from cached hostfile</p>
+<ul>
+<li>base: mirrors.aliyun.com</li>
+<li>extras: mirrors.163.com</li>
+<li>updates: mirrors.aliyun.com
+  ============ 匹配：kubectl =========
+  kubernetes-client.x86_64 : Kubernetes client tools</li>
+</ul>
+</blockquote>
+<ul>
+<li>Ubuntu</li>
+</ul>
+<pre><code class="shell"># docker
+$ sudo apt-get install docker
+
+# k8s client 源 需要科学上网 故采用二进制方法
+$ mkdir ~/soft
+$ cd ~/soft
+$ wget https://dl.k8s.io/v1.13.2/kubernetes-client-linux-amd64.tar.gz
+$ tar xzf kubernetes-client-linux-amd64.tar.gz
+$ cd ~/soft/kubernetes/client/bin
+$ sudo ln -s ~/soft/kubernetes/client/bin/kubectl /usr/bin
+</code></pre>
+
+<h3 id="docker">Docker 登录阿里云</h3>
+<pre><code>docker login --username=cheche_k8s@1512522691951489 registry.cn-beijing.aliyuncs.com --password xxxxxx   # 登录阿里云docker镜像仓库
+Login Succeeded
+</code></pre>
+
+<h3 id="k8s-client">配置 k8s client 认证文件(阿里云)</h3>
+<blockquote>
+<p>参考文档</p>
+</blockquote>
+<pre><code class="shell">$ cd ~/.kube    # if not exists mkdir .kube
+$ vim config    # 编辑config文件 将凭证粘贴到文件。
+
+$ kubectl get nodes  # 测试是否成功  类似返回为成功
+NAME                                STATUS   ROLES    AGE    VERSION
+cn-beijing.i-2ze16wo7jtythx5o7hv6   Ready    &lt;none&gt;   127d   v1.11.5
+</code></pre>
+
+<h3 id="_4">获取项目配置信息</h3>
+<blockquote>
+<p>此处用例 测试环境 git地址：http://192.168.1.213/devops/k8s-cd.git</p>
+</blockquote>
+<pre><code class="shell">$ git clone http://192.168.1.213/devops/k8s-cd.git
+$ cd k8s-cd
+</code></pre>
+
+<h3 id="yaml">yaml模板替换</h3>
+<ul>
+<li>需要替换内容</li>
+</ul>
+<pre><code>deployment.yaml:  namespace: ${namespace}
+deployment.yaml:  replicas: ${replicas}
+deployment.yaml:          image: registry-vpc.cn-beijing.aliyuncs.com/cheche365/cheche:${imageName}
+
+ingress.yaml:  - host: ${domin}
+ingress.yaml:  namespace: ${namespace}
+
+service.yaml:  namespace: ${namespace}
+</code></pre>
+
+<ul>
+<li>已有内容</li>
+</ul>
+<pre><code class="shell"># grep ':' uat/config.properties
+domain: opc.bc.com
+namespace: uat
+replicas : 2
+</code></pre>
+
+<ul>
+<li>shell </li>
+</ul>
+<pre><code class="shell">$ config=uat/config.propertie
+
+# service.yaml 
+$ sed &quot;s/\(namespace:\).*/\1 `awk -F':' '/namespace/{print $2}' ${config}`/&quot; service.yaml  &gt; uat/service.yaml
+
+#ingress.yaml
+$ sed -e &quot;s/\(host:\).*/\1 `awk -F':' '/domain/{print $2}' ${config}`/&quot; -e &quot;s/\(namespace:\).*/\1 `awk -F':' '/namespace/{print $2}' ${config}`/&quot; ingress.yaml &gt; uat/ingress.yaml
+
+# deployment.yaml
+$ sed -e &quot;s/\(namespace:\).*/\1 `awk -F':' '/namespace/{print $2}' ${config}`/&quot; -e &quot;s/\(replicas:\).*/\1 `awk -F':' '/replicas/{print $2}' ${config}` /&quot; -e &quot;s/\(image\: registry-vpc.cn-beijing.aliyuncs.com\/cheche365\/cheche\:\).*/\1$imageName/&quot; deployment.yaml &gt;uat/deployment.yaml
+
+</code></pre>
+
+<h3 id="gradle-jenkins">Gradle 测试   (Jenkins 集成)</h3>
+<pre><code>$ cd /path_of_project/
+$ gradle -Dorg.gradle.daemon=false
+-Dorg.gradle.jvmargs=&quot;-Xms4g
+-Xmx4g
+-XX:+UseG1GC
+-Xverify:none
+-XX:ReservedCodeCacheSize=256m
+-XX:SoftRefLRUPolicyMSPerMB=256&quot;
+clean
+-x test
+admin:build  # 测试
+</code></pre>
+
+<h3 id="docker_1">构建docker 镜像</h3>
+<pre><code class="shell"># docker build -t admin:1.01 -f ./admin/Dockerfile .  # 测试语句
+$ docker build -f ./admin/Dockerfile -t registry.cn-beijing.aliyuncs.com/cheche365/cheche:admin_Ali --force-rm .
+</code></pre>
+
+<blockquote>
+<h3 id="_5">命名 为阿里格式 / 上传</h3>
+<p>```
+$ docker tag f32c1c082c9f registry.cn-beijing.aliyuncs.com/cheche365/cheche:admin1.01
+$ docker tag [ImageId] registry.cn-beijing.aliyuncs.com/cheche365/cheche:[镜像版本号]</p>
+<p>$ docker push registry.cn-beijing.aliyuncs.com/cheche365/cheche:admin1.0
+$ docker push registry.cn-beijing.aliyuncs.com/cheche365/cheche:[镜像版本号]
+```</p>
+</blockquote>
+<hr />
+<h3 id="_6">提交配置</h3>
+<p><em>kubectl 执行用户 需要和 配置.kube/config 是同一用户</em></p>
+<pre><code class="shell">$ kubectl apply -f path_obj/common-configmap.yaml    # 数据配置文件
+$ kubectl apply -f uat/
+</code></pre>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../Dockerfile/" class="btn btn-neutral float-right" title="编写dockerfile">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../server/" class="btn btn-neutral" title="配置server"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+      <p>None</p>
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../server/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../Dockerfile/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+
+</body>
+</html>
